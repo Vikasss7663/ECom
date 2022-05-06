@@ -1,0 +1,112 @@
+POST-CREATE-CATEGORY
+-----------------------
+curl -i \
+-d '{ "categoryId": "1", "categoryName": "Mobile", "categoryDesc":"New Mobile Technology"}' \
+-H "Content-Type: application/json" \
+-X POST http://localhost:8080/v1/category
+
+curl -i \
+-d '{ "categoryId": "2", "categoryName": "Laptop", "categoryDesc":"New Laptop Technology"}' \
+-H "Content-Type: application/json" \
+-X POST http://localhost:8080/v1/category
+
+
+GET-ALL-CATEGORY
+-----------------------
+curl -i http://localhost:8080/v1/category
+
+
+GET-CATEGORY-BY-ID
+-----------------------
+curl -i http://localhost:8080/v1/category/1
+
+
+UPDATE-CATEGORY
+-----------------------
+curl -i \
+-d '{ "categoryName": "Laptop", "categoryDesc":"New Laptop Technology - Updated"}' \
+-H "Content-Type: application/json" \
+-X PUT http://localhost:8080/v1/category/2
+
+
+DELETE-CATEGORY
+-----------------------
+curl -i -X DELETE http://localhost:8080/v1/category/1
+
+
+-------------------------------------------------------------------------------
+
+
+POST-CREATE-PRODUCT
+-----------------------
+curl -i \
+-d '{ "productId": "1", "categoryId": "1", "productName":"IPHONE-13 Pro", "productPrice":120000}' \
+-H "Content-Type: application/json" \
+-X POST http://localhost:8080/v1/product
+
+curl -i \
+-d '{ "productId": "2", "categoryId": "2", "productName":"Macbook Air-13", "productPrice":120000}' \
+-H "Content-Type: application/json" \
+-X POST http://localhost:8080/v1/product
+
+
+GET-ALL-PRODUCT
+-----------------------
+curl -i http://localhost:8080/v1/product
+
+
+GET-PRODUCT-BY-ID
+-----------------------
+curl -i http://localhost:8080/v1/product/1
+
+
+UPDATE-PRODUCT
+-----------------------
+curl -i \
+-d '{ "productId": "1", "categoryId": "1", "productName":"IPHONE-13 Pro - NEW Updated", "productPrice":120000}' \
+-H "Content-Type: application/json" \
+-X PUT http://localhost:8080/v1/product/1
+
+
+DELETE-PRODUCT
+-----------------------
+curl -i -X DELETE http://localhost:8080/v1/product/1
+
+
+--------------------------------------------------------------------------------
+
+
+POST-CREATE-RATING
+-----------------------
+curl -i \
+-d '{ "ratingId": "1", "productId": "1", "rating":4.5, "comment":"Awesome Product, finally my dream came true"}' \
+-H "Content-Type: application/json" \
+-X POST http://localhost:8080/v1/rating
+
+curl -i \
+-d '{ "ratingId": "2", "productId": "1", "rating":5, "comment":"This is wonderful product, value for money"}' \
+-H "Content-Type: application/json" \
+-X POST http://localhost:8080/v1/rating
+
+
+GET-ALL-RATING
+-----------------------
+curl -i http://localhost:8080/v1/rating
+
+
+GET-RATING-BY-ID
+-----------------------
+curl -i http://localhost:8080/v1/rating/1
+
+
+UPDATE-RATING
+-----------------------
+curl -i \
+-d '{ "ratingId": "2", "productId": "1", "rating":5, "comment":"This is wonderful product, value for money"}' \
+-H "Content-Type: application/json" \
+-X PUT http://localhost:8080/v1/rating/1
+
+
+DELETE-RATING
+-----------------------
+curl -i -X DELETE http://localhost:8080/v1/rating/1
