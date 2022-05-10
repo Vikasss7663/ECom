@@ -18,7 +18,7 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public Flux<Category> getAllCategories() {
+    public Flux<Category> getAllUsers() {
         return categoryRepository.findAll();
     }
 

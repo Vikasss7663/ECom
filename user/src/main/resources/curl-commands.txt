@@ -1,0 +1,63 @@
+POST-CREATE-USER
+-----------------------
+curl -i \
+-d '{ "userId": "1", "userName": "Vikas Singh", "userEmail":"vishalsinghgk2018@gmail.com", "userPassword":"123456", "userPhone":"1234567890"}' \
+-H "Content-Type: application/json" \
+-X POST http://localhost:8081/v1/user
+
+
+GET-ALL-USER
+-----------------------
+curl -i http://localhost:8081/v1/user
+
+
+GET-USER-BY-ID
+-----------------------
+curl -i http://localhost:8081/v1/user/1
+
+
+UPDATE-USER
+-----------------------
+curl -i \
+-d '{ "userId": "1", "userName": "Vishal Singh", "userEmail":"vishalsinghgk2018@gmail.com", "userPassword":"123456", "userPhone":"1234567890"}' \
+-H "Content-Type: application/json" \
+-X PUT http://localhost:8081/v1/user/1
+
+
+DELETE-USER
+-----------------------
+curl -i -X DELETE http://localhost:8081/v1/user/1
+
+
+-------------------------------------------------------------------------------
+
+
+POST-CREATE-ADDRESS
+-----------------------
+curl -i \
+-d '{ "addressId": "1", "userId": "1", "addressLine1":"Devgaon(nua)", "addressLine2":"Near Power House", "postalCode":"333707", "city":"jhunjhunu", "state":"rajasthan", "country":"india"}' \
+-H "Content-Type: application/json" \
+-X POST http://localhost:8081/v1/address
+
+
+GET-ALL-ADDRESS
+-----------------------
+curl -i http://localhost:8081/v1/address
+
+
+GET-ADDRESS-BY-ID
+-----------------------
+curl -i http://localhost:8081/v1/address/1
+
+
+UPDATE-ADDRESS
+-----------------------
+curl -i \
+-d '{ "addressId": "1", "userId": "1", "addressLine1":"Devgaon(nua)", "addressLine2":"Near Power House", "postalCode":"333707", "city":"jhunjhunu", "state":"rajasthan", "country":"india"}' \
+-H "Content-Type: application/json" \
+-X PUT http://localhost:8081/v1/address/1
+
+
+DELETE-ADDRESS
+-----------------------
+curl -i -X DELETE http://localhost:8081/v1/address/1
