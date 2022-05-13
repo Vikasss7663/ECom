@@ -21,9 +21,9 @@ public class CategoryController {
     }
 
     @GetMapping
-    public Flux<Category> getAllUsers() {
+    public Flux<Category> getAllCategories() {
 
-        return categoryService.getAllUsers().log();
+        return categoryService.getAllCategories().log();
     }
 
     @GetMapping("{id}")

@@ -1,8 +1,63 @@
 spring:
   profiles:
     active: local
+  application:
+    name: 'product-management-service'
+
 server:
   port: 8080
+
+logging:
+  level:
+    root: INFO
+    com:
+      ecom: DEBUG
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      product-management-service:
+        registerHealthIndicator: true
+        eventConsumerBufferSize: 10
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 10
+        permittedNumberOfCallsInHalfOpenState: 4
+        slidingWindowSize: 10
+        waitDurationInOpenState: 5s
+        slidingWindowType: COUNT_BASED
+  retry:
+    instances:
+      retry-service:
+        maxAttempts: 10
+        waitDuration: 1s
+        enableExponentialBackoff: true
+        exponentialBackoffMultiplier: 2
+
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    enabled-by-default: true
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: ProductManagementService
+
+kafka:
+  producer:
+    bootstrap-servers: 'http://0.0.0.0:9092'
+    schema-registry-url: 'http://0.0.0.0:8081'
+  consumer:
+    bootstrap-servers: 'http://0.0.0.0:9092'
+    schema-registry-url: 'http://0.0.0.0:8081'
+    group-id: 'product-service-1'
 ---
 spring:
   config:
