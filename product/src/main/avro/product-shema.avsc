@@ -1,0 +1,43 @@
+{
+  "type": "record",
+  "name": "ProductEvent",
+  "namespace": "com.ecom.schema.product",
+  "fields": [
+    {
+      "name": "productId",
+      "type": [
+        "string"
+      ]
+    },
+    {
+      "name": "productName",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    {
+      "name": "productPrice",
+      "type": [
+        "double"
+      ]
+    },
+    {
+      "name": "categoryId",
+      "type": [
+        "string"
+      ]
+    },
+    {
+      "name": "productStatus",
+      "type": {
+        "name": "ProductStatusEnum",
+        "type": "enum",
+        "symbols": [
+          "CREATED",
+          "UPDATED"
+        ]
+      }
+    }
+  ]
+}

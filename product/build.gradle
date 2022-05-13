@@ -2,6 +2,8 @@ plugins {
 	id 'org.springframework.boot' version '2.6.7'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'maven-publish'
+//	id 'com.github.davidmc24.gradle.plugin.avro' version '1.3.0'
 }
 
 group = 'com.ecom'
@@ -16,17 +18,55 @@ configurations {
 
 repositories {
 	mavenCentral()
+	mavenLocal()
+	maven {
+		url = uri("https://packages.confluent.io/maven/")
+	}
+
+	maven {
+		url = uri("https://repo.maven.apache.org/maven2/")
+	}
 }
 
 dependencies {
+
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+
+	// testing
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
 	testImplementation 'io.projectreactor:reactor-test'
+
+	// actuator
+	implementation 'org.springframework.boot:spring-boot-starter-actuator:2.6.7'
+	implementation 'org.springframework.boot:spring-boot-starter-aop:2.6.7'
+
+	// swagger
+	implementation 'org.springdoc:springdoc-openapi-webflux-core:1.6.8'
+	implementation 'org.springdoc:springdoc-openapi-webflux-ui:1.6.8'
+
+	// prometheus
+	implementation 'io.micrometer:micrometer-registry-prometheus:1.8.5'
+
+	// circuit breaker
+	implementation 'org.springframework:spring-aspects:5.3.19'
+	implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j:2.1.2'
+
+	// kafka
+	implementation "org.springframework.kafka:spring-kafka"
+
+	// avro
+	def avro_version = "1.11.0"
+	implementation "io.confluent:kafka-avro-serializer:5.3.0"
+	implementation "io.confluent:kafka-schema-serializer:6.2.1"
+	implementation "org.apache.avro:avro:${avro_version}"
+	implementation "org.apache.avro:avro-maven-plugin:${avro_version}"
+	implementation "org.apache.avro:avro-compiler:${avro_version}"
+	implementation "org.apache.avro:avro-ipc:${avro_version}"
 }
 
 test {
@@ -38,3 +78,16 @@ sourceSets {
 		java.srcDirs = ['src/test/java/unit', 'src/test/java/intg']
 	}
 }
+
+
+
+//import com.github.davidmc24.gradle.plugin.avro.GenerateAvroJavaTask
+//
+//def generateAvro = tasks.register("generateAvro", GenerateAvroJavaTask) {
+//	source("src/main/avro")
+//	outputDir = file("src/main/java")
+//}
+//
+//tasks.named("compileJava").configure {
+//	source(generateAvro)
+//}
