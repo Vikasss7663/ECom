@@ -17,4 +17,6 @@ public class ApplicationConstants {
     // Kafka
     public static final String TOPIC_NAME = "PRODUCT-EVENT";
     public static final String SCHEMA_REGISTRY_URL = "schema.registry.url";
+
+    public static final String ORIGIN_URL = "*";
 }

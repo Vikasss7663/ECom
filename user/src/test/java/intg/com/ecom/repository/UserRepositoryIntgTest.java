@@ -3,13 +3,17 @@ package com.ecom.repository;
 import com.ecom.domain.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
+import reactor.test.StepVerifier;
 
 import java.util.Date;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataMongoTest
 @TestPropertySource(properties = "spring.mongodb.embedded.version=3.5.5")
@@ -38,5 +42,19 @@ class UserRepositoryIntgTest {
     void tearDown() {
 
         userRepository.deleteAll().block();
+    }
+
+    @Test
+    void findByUserEmailAndUserPassword() {
+
+        var email = "vishalsinghgk2018@gmail.com";
+        var password = "123456";
+        var userMono = userRepository.findByUserEmailAndUserPassword(email, password);
+
+        StepVerifier.create(userMono)
+                .assertNext(user -> {
+                    assertEquals("1", user.getUserId());
+                })
+                .verifyComplete();
     }
 }

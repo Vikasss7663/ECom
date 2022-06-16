@@ -39,8 +39,8 @@ class RatingControllerIntgTest {
         var date = new Date();
 
         var listOfCategories = List.of(
-                new Rating("1", "1", 5.0, "Awesome Product, finally my dream came true" , date, date),
-                new Rating("2", "1", 4.5, "This is wonderful product, value for money" , date, date)
+                new Rating("1", "1", "1", 5.0, "Awesome Product, finally my dream came true", date, date),
+                new Rating("2", "2", "1", 4.5, "This is wonderful product, value for money", date, date)
         );
 
         ratingRepository.saveAll(listOfCategories)
@@ -110,7 +110,7 @@ class RatingControllerIntgTest {
 
         var date = new Date();
 
-        var rating = new Rating("3", "1", 5.0, "Finally, I had bought my kidney, just to write this comment." , date, date);
+        var rating = new Rating("3", "3", "1", 5.0, "Finally, I had bought my kidney, just to write this comment." , date, date);
 
         webTestClient
         .post()
@@ -135,7 +135,7 @@ class RatingControllerIntgTest {
         var date = new Date();
 
         var id = "1";
-        var rating = new Rating("2", "1", 4.5, "It's always good to use it." , date, date);
+        var rating = new Rating("1", "2", "1", 4.5, "It's always good to use it." , date, date);
 
         webTestClient
                 .put()

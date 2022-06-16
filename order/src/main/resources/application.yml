@@ -1,0 +1,51 @@
+spring:
+  profiles:
+    active: local
+  application:
+    name: 'order-management-service'
+
+server:
+  port: 8095
+
+logging:
+  level:
+    root: INFO
+    com:
+      ecom: DEBUG
+---
+spring:
+  config:
+    activate:
+      on-profile:
+        - local
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: local
+  redis:
+    client:
+      hostname: '0.0.0.0'
+      port: '6379'
+---
+spring:
+  config:
+    activate:
+      on-profile:
+        - non-prod
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: local
+---
+spring:
+  config:
+    activate:
+      on-profile:
+        - prod
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: local

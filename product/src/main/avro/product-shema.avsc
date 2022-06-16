@@ -27,17 +27,6 @@
       "type": [
         "string"
       ]
-    },
-    {
-      "name": "productStatus",
-      "type": {
-        "name": "ProductStatusEnum",
-        "type": "enum",
-        "symbols": [
-          "CREATED",
-          "UPDATED"
-        ]
-      }
     }
   ]
 }

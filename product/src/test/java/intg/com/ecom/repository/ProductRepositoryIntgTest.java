@@ -10,9 +10,12 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import reactor.test.StepVerifier;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import static com.ecom.utils.DummyItems.getDummyProduct;
+import static com.ecom.utils.DummyItems.getDummyProducts;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataMongoTest
@@ -28,10 +31,7 @@ class ProductRepositoryIntgTest {
 
         var date = new Date();
 
-        var listOfProducts = List.of(
-                new Product("1", "IPHONE-13 Pro",120000d, "1" , date, date),
-                new Product("2", "Macbook Pro - 13 Inch",100000d, "2" , date, date)
-        );
+        var listOfProducts = Arrays.asList(getDummyProducts());
 
         productRepository.saveAll(listOfProducts)
                 .blockLast();
@@ -70,7 +70,7 @@ class ProductRepositoryIntgTest {
 
         var date = new Date();
 
-        var product = new Product("3", "Samsung - M31",18000d, "1" , date, date);
+        var product = getDummyProduct();
 
         var productMono = productRepository.save(product).log();
 

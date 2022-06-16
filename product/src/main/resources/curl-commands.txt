@@ -1,15 +1,24 @@
 POST-CREATE-CATEGORY
 -----------------------
 curl -i \
--d '{ "categoryId": "1", "categoryName": "Mobile", "categoryDesc":"New Mobile Technology"}' \
+-d '{ "categoryId": "1", "categoryName": "Mobiles", "categoryDesc":"New Mobile Technology"}' \
 -H "Content-Type: application/json" \
 -X POST http://localhost:8080/v1/category
 
 curl -i \
--d '{ "categoryId": "2", "categoryName": "Laptop", "categoryDesc":"New Laptop Technology"}' \
+-d '{ "categoryId": "2", "categoryName": "Laptops", "categoryDesc":"New Laptop Technology"}' \
 -H "Content-Type: application/json" \
 -X POST http://localhost:8080/v1/category
 
+curl -i \
+-d '{ "categoryId": "3", "categoryName": "Tablets", "categoryDesc":"New Tablet Technology"}' \
+-H "Content-Type: application/json" \
+-X POST http://localhost:8080/v1/category
+
+curl -i \
+-d '{ "categoryId": "4", "categoryName": "Watches", "categoryDesc":"New Watch Technology"}' \
+-H "Content-Type: application/json" \
+-X POST http://localhost:8080/v1/category
 
 GET-ALL-CATEGORY
 -----------------------
@@ -24,9 +33,9 @@ curl -i http://localhost:8080/v1/category/1
 UPDATE-CATEGORY
 -----------------------
 curl -i \
--d '{ "categoryName": "Laptop", "categoryDesc":"New Laptop Technology - Updated"}' \
+-d '{ "categoryName": "Mobiles", "categoryDesc":"New Mobile Technology"}' \
 -H "Content-Type: application/json" \
--X PUT http://localhost:8080/v1/category/2
+-X PUT http://localhost:8080/v1/category/1
 
 
 DELETE-CATEGORY
@@ -40,15 +49,19 @@ curl -i -X DELETE http://localhost:8080/v1/category/1
 POST-CREATE-PRODUCT
 -----------------------
 curl -i \
--d '{ "productId": "1", "categoryId": "1", "productName":"IPHONE-13 Pro", "productPrice":120000}' \
+-d '{ "productId": "1", "categoryId": "1", "productName":"IPHONE-13 Pro", "productDesc": "IPHONE-13 PRO gray/golden color", "productPrice":120000, "productImageUrl": "https://images.unsplash.com/photo-1635775844900-706fa4015ed7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2669&q=80"}' \
 -H "Content-Type: application/json" \
 -X POST http://localhost:8080/v1/product
 
 curl -i \
--d '{ "productId": "2", "categoryId": "2", "productName":"Macbook Air-13", "productPrice":120000}' \
+-d '{ "productId": "2", "categoryId": "2", "productName":"Macbook Air-13", "productDesc": "Macbook Air-13 inch", "productPrice":120000}' \
 -H "Content-Type: application/json" \
 -X POST http://localhost:8080/v1/product
 
+curl -i \
+-d '{ "productId": "3", "categoryId": "1", "productName":"Samsung M-31", "productDesc": "Samsung M31", "productPrice":18000, "productImageUrl": "https://images.unsplash.com/photo-1591122947157-26bad3a117d2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"}' \
+-H "Content-Type: application/json" \
+-X POST http://localhost:8080/v1/product
 
 GET-ALL-PRODUCT
 -----------------------
@@ -63,9 +76,15 @@ curl -i http://localhost:8080/v1/product/1
 UPDATE-PRODUCT
 -----------------------
 curl -i \
--d '{ "productId": "1", "categoryId": "1", "productName":"IPHONE-13 Pro - NEW Updated", "productPrice":120000}' \
+-d '{ "productId": "1", "categoryId": "1", "productName":"IPHONE-13 Pro", "productDesc": "IPHONE-13 PRO gray/golden color", "productPrice":120000, "productImageUrl": "https://images.unsplash.com/photo-1635775844900-706fa4015ed7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2669&q=80"}' \
 -H "Content-Type: application/json" \
 -X PUT http://localhost:8080/v1/product/1
+
+curl -i \
+-d '{ "productId": "2", "categoryId": "2", "productName":"Macbook Air-13", "productDesc": "Macbook Air-13 inch", "productPrice":100000, "productImageUrl": "https://images.unsplash.com/photo-1625766763788-95dcce9bf5ac?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80"}' \
+-H "Content-Type: application/json" \
+-X POST http://localhost:8080/v1/product
+
 
 
 DELETE-PRODUCT
@@ -79,12 +98,12 @@ curl -i -X DELETE http://localhost:8080/v1/product/1
 POST-CREATE-RATING
 -----------------------
 curl -i \
--d '{ "ratingId": "1", "productId": "1", "rating":4.5, "comment":"Awesome Product, finally my dream came true"}' \
+-d '{ "ratingId": "1", "userId": "1", "productId": "1", "rating":4.5, "comment":"Awesome Product, finally my dream came true"}' \
 -H "Content-Type: application/json" \
 -X POST http://localhost:8080/v1/rating
 
 curl -i \
--d '{ "ratingId": "2", "productId": "1", "rating":5, "comment":"This is wonderful product, value for money"}' \
+-d '{ "ratingId": "2", "userId": "1", "productId": "1", "rating":5, "comment":"This is wonderful product, value for money"}' \
 -H "Content-Type: application/json" \
 -X POST http://localhost:8080/v1/rating
 
@@ -102,7 +121,7 @@ curl -i http://localhost:8080/v1/rating/1
 UPDATE-RATING
 -----------------------
 curl -i \
--d '{ "ratingId": "2", "productId": "1", "rating":5, "comment":"This is wonderful product, value for money"}' \
+-d '{ "ratingId": "2", "userId": "1", "productId": "1", "rating":5, "comment":"This is wonderful product, value for money"}' \
 -H "Content-Type: application/json" \
 -X PUT http://localhost:8080/v1/rating/1
 

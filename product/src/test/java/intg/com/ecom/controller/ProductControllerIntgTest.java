@@ -13,6 +13,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -35,11 +36,11 @@ class ProductControllerIntgTest {
     @BeforeEach
     void setUp() {
 
-        var date = new Date();
+        var date = LocalDate.now();
 
         var listOfProducts = List.of(
-                new Product("1", "IPHONE-13 Pro",120000d, "1" , date, date),
-                new Product("2", "Macbook Pro - 13 Inch",100000d, "2" , date, date)
+                new Product("1", "IPHONE-13 Pro", "", 120000d, "", 10, "1" , date, date),
+                new Product("2", "Macbook Pro - 13 Inch", "", 100000d, "", 111 , "2", date, date)
         );
 
         productRepository.saveAll(listOfProducts)
@@ -101,9 +102,9 @@ class ProductControllerIntgTest {
     @Test
     void addProduct() {
 
-        var date = new Date();
+        var date = LocalDate.now();
 
-        var product = new Product("3", "Samsung - M31",18000d, "1" , date, date);
+        var product = new Product("3", "Samsung - M31", "", 18000d, "", 10, "1" , date, date);
 
         webTestClient
         .post()
@@ -125,9 +126,9 @@ class ProductControllerIntgTest {
     @Test
     void addProductValidation() {
 
-        var date = new Date();
+        var date = LocalDate.now();
 
-        var product = new Product("3", null,-18000d, "1" , date, date);
+        var product = new Product("3", null, " " , -18000d, " ", 100, "1" , date, date);
 
         webTestClient
                 .post()
@@ -149,10 +150,10 @@ class ProductControllerIntgTest {
     @Test
     void updateProduct() {
 
-        var date = new Date();
+        var date = LocalDate.now();
 
         var id = "1";
-        var product = new Product("1", "IPHONE-13 Pro",130000d, "1" , date, date);
+        var product = new Product("1", "IPHONE-13 Pro", "", 130000d, "", 10, "1" , date, date);
 
         webTestClient
                 .put()

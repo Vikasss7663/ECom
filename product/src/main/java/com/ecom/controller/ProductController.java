@@ -3,8 +3,6 @@ package com.ecom.controller;
 import com.ecom.domain.Product;
 import com.ecom.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
-import org.springframework.cloud.client.circuitbreaker.ReactiveCircuitBreaker;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,14 +10,17 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
-import java.util.Date;
+
+import static com.ecom.constants.ApplicationConstants.ORIGIN_URL;
 
 @Slf4j
 @RestController
+@CrossOrigin(origins = ORIGIN_URL)
 @RequestMapping("/v1/product")
 public class ProductController {
 
     private ProductService productService;
+    private boolean productServiceLogEnabled = true;
 
     public ProductController(ProductService productService) {
         this.productService = productService;
@@ -29,16 +30,29 @@ public class ProductController {
     public Flux<Product> getAllProducts(@RequestParam(value = "category", required = false) String categoryId) {
 
         if(categoryId != null) {
-            return productService.getProductByCategory(categoryId).log();
+            return productService.getProductByCategory(categoryId)
+                    .onErrorResume(throwable -> {
+                        if(productServiceLogEnabled) log.error(throwable.getMessage());
+                        return Flux.empty();
+                    });
         }
-        return productService.getAllProducts().log();
+
+        return productService.getAllProducts()
+                .onErrorResume(throwable -> {
+                    if(productServiceLogEnabled) log.error(throwable.getMessage());
+                    return Flux.empty();
+                });
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public Mono<ResponseEntity<Product>> getProductById(@PathVariable String id) {
 
         return productService.getProductById(id)
                         .map(ResponseEntity.ok()::body)
+                        .onErrorResume(throwable -> {
+                            if(productServiceLogEnabled) log.error(throwable.getMessage());
+                            return Mono.empty();
+                        })
                         .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
     }
 

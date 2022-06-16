@@ -1,0 +1,50 @@
+spring:
+  profiles:
+    active: local
+  application:
+    name: 'cart-management-service'
+
+server:
+  port: 8090
+
+logging:
+  level:
+    root: INFO
+    com:
+      ecom: DEBUG
+
+scheduler:
+  fixedRate: 5000
+---
+spring:
+  config:
+    activate:
+      on-profile:
+        - local
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: local
+---
+spring:
+  config:
+    activate:
+      on-profile:
+        - non-prod
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: local
+---
+spring:
+  config:
+    activate:
+      on-profile:
+        - prod
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: local

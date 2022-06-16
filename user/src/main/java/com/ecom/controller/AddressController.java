@@ -23,7 +23,7 @@ public class AddressController {
     @GetMapping
     public Flux<Address> getAllAddresses(@RequestParam(value = "user", required = false) String userId) {
 
-        if(userId == null) return null; // throw error
+        if(userId == null) return Flux.empty(); // throw error
 
         return addressService.getAddressByUserId(userId).log();
     }

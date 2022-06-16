@@ -1,0 +1,22 @@
+spring:
+  profiles:
+    active: local
+
+server:
+  port: 9000
+
+restClient:
+  productUrl: http://localhost:8080/v1/product
+  categoryUrl: http://localhost:8080/v1/category
+  ratingUrl: http://localhost:8080/v1/rating
+
+  userUrl: http://localhost:8085/v1/user
+  addressUrl: http://localhost:8085/v1/address
+
+  cartUrl: http://localhost:8090/v1/cart
+  cartItemUrl: http://localhost:8090/v1/cart-item
+
+  orderUrl: http://localhost:8095/v1/order
+  orderItemUrl: http://localhost:8095/v1/order-item
+
+  paymentUrl: http://localhost:8100/v1/payment

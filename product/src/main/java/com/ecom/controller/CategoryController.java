@@ -10,7 +10,10 @@ import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 
+import static com.ecom.constants.ApplicationConstants.ORIGIN_URL;
+
 @RestController
+@CrossOrigin(origins = ORIGIN_URL)
 @RequestMapping("/v1/category")
 public class CategoryController {
 
@@ -26,7 +29,7 @@ public class CategoryController {
         return categoryService.getAllCategories().log();
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public Mono<ResponseEntity<Category>> getCategoryById(@PathVariable String id) {
 
         return categoryService.getCategoryById(id)

@@ -1,6 +1,7 @@
 package com.ecom.controller;
 
 import com.ecom.domain.User;
+import com.ecom.dtos.LoginDto;
 import com.ecom.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +11,10 @@ import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 
+import static com.ecom.constants.ApplicationConstants.ORIGIN_URL;
+
 @RestController
+@CrossOrigin(origins = ORIGIN_URL)
 @RequestMapping("/v1/user")
 public class UserController {
 
@@ -23,21 +27,27 @@ public class UserController {
     @GetMapping
     public Flux<User> getAllUsers() {
 
-        return userService.getAllUsers().log();
+        return userService.getAllUsers();
     }
 
     @GetMapping("{id}")
-    public Mono<ResponseEntity<User>> getUserById(@PathVariable String id) {
+    public Mono<User> getUserById(@PathVariable String userId) {
 
-        return userService.getUserById(id)
+        return userService.getUserById(userId);
+    }
+
+    @PostMapping(value = "/login")
+    public Mono<ResponseEntity<User>> loginUser(@RequestBody @Valid LoginDto loginDto) {
+
+        return userService.loginUser(loginDto.userEmail, loginDto.userPassword)
                 .map(ResponseEntity.ok()::body)
                 .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()))
                 .log();
     }
 
-    @PostMapping
+    @PostMapping(value = "/signup")
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<User> addUser(@RequestBody @Valid User user) {
+    public Mono<User> signUpUser(@RequestBody @Valid User user) {
 
         return userService.addUser(user).log();
     }

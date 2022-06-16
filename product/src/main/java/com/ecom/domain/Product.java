@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -21,11 +21,15 @@ public class Product {
     private String productId;
     @NotBlank(message = "product.name must be present")
     private String productName;
+    @NotBlank(message = "product.desc must be present")
+    private String productDesc;
     @NotNull
     @Positive(message = "product.price must be positive")
     private Double productPrice;
+    private String productImageUrl;
+    private long productQuantity;
     @NotBlank(message = "product.category must be present")
     private String categoryId;
-    private Date createdAt;
-    private Date modifiedAt;
+    private LocalDate createdAt = LocalDate.now();
+    private LocalDate modifiedAt = LocalDate.now();
 }

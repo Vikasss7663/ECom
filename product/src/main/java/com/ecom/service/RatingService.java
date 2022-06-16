@@ -2,10 +2,10 @@ package com.ecom.service;
 
 import com.ecom.domain.Rating;
 import com.ecom.repository.RatingRepository;
-import com.ecom.schema.product.ProductStatusEnum;
 import io.micrometer.core.instrument.MeterRegistry;
 import lombok.val;
 import org.springframework.cloud.client.circuitbreaker.ReactiveCircuitBreaker;
+import org.springframework.cloud.client.circuitbreaker.ReactiveCircuitBreakerFactory;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -19,17 +19,17 @@ public class RatingService {
     private ReactiveCircuitBreaker ratingServiceCircuitBreaker;
     private MeterRegistry meterRegistry;
 
-    public RatingService(RatingRepository ratingRepository, ReactiveCircuitBreaker ratingServiceCircuitBreaker, MeterRegistry meterRegistry) {
+    public RatingService(RatingRepository ratingRepository, ReactiveCircuitBreakerFactory circuitBreakerFactory, MeterRegistry meterRegistry) {
         this.ratingRepository = ratingRepository;
-        this.ratingServiceCircuitBreaker = ratingServiceCircuitBreaker;
+        this.ratingServiceCircuitBreaker = circuitBreakerFactory.create("ratingServiceCircuitBreaker");
         this.meterRegistry = meterRegistry;
     }
 
     public Flux<Rating> getAllRatings(String productId) {
 
-        Rating defaultRating1 = new Rating("1", productId, 4.5d, "Awesome Product", new Date(), new Date());
-        Rating defaultRating2 = new Rating("2", productId, 4.2d, "Very Nice Product", new Date(), new Date());
-        Rating defaultRating3 = new Rating("3", productId, 5.0d, "I love this Product", new Date(), new Date());
+        Rating defaultRating1 = new Rating("1", "1", productId, 4.5d, "Awesome Product", new Date(), new Date());
+        Rating defaultRating2 = new Rating("2", "2", productId, 4.2d, "Very Nice Product", new Date(), new Date());
+        Rating defaultRating3 = new Rating("3", "3", productId, 5.0d, "I love this Product", new Date(), new Date());
 
         return ratingServiceCircuitBreaker.run(
                 ratingRepository.findByProductId(productId).map(ratings -> {
@@ -44,7 +44,7 @@ public class RatingService {
 
     public Mono<Rating> getRatingById(String id) {
 
-        Rating defaultRating = new Rating("1", "1", 4.5d, "Awesome Product", new Date(), new Date());
+        Rating defaultRating = new Rating(id, "1", "1", 4.5d, "Awesome Product", new Date(), new Date());
 
         return  ratingServiceCircuitBreaker.run(ratingRepository.findById(id),
                 throwable -> Mono.just(defaultRating));
@@ -53,7 +53,7 @@ public class RatingService {
     public Mono<Rating> addRating(Rating rating) {
 
         val date = new Date();
-        Rating defaultRating = new Rating("1", "1", 4.5d, "Awesome Product", date, date);
+        Rating defaultRating = new Rating("1", "1", "1", 4.5d, "Awesome Product", date, date);
 
         rating.setCreatedAt(date);
         rating.setModifiedAt(date);
@@ -64,7 +64,7 @@ public class RatingService {
     public Mono<Rating> updateRating(Rating updatedRating, String id) {
 
         val date = new Date();
-        Rating defaultRating = new Rating("1", "1", 4.5d, "Awesome Product", date, date);
+        Rating defaultRating = new Rating(id, "1", "1", 4.5d, "Awesome Product", date, date);
 
         return ratingServiceCircuitBreaker.run(
                 ratingRepository.findById(id)

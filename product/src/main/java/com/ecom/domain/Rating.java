@@ -17,6 +17,8 @@ public class Rating {
 
     @Id
     private String ratingId;
+    @NotBlank(message = "rating.userId must be present")
+    private String userId;
     @NotBlank(message = "rating.productId must be present")
     private String productId;
     @NotNull

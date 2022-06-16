@@ -10,7 +10,10 @@ import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 
+import static com.ecom.constants.ApplicationConstants.ORIGIN_URL;
+
 @RestController
+@CrossOrigin(origins = ORIGIN_URL)
 @RequestMapping("/v1/rating")
 public class RatingController {
 
@@ -23,12 +26,12 @@ public class RatingController {
     @GetMapping
     public Flux<Rating> getAllRatings(@RequestParam(value = "product", required = false) String productId) {
 
-        if(productId == null) return null;
+        if(productId == null) return Flux.empty();
 
         return ratingService.getAllRatings(productId).log();
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public Mono<ResponseEntity<Rating>> getRatingById(@PathVariable String id) {
 
         return ratingService.getRatingById(id)

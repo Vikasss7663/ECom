@@ -2,10 +2,10 @@ package com.ecom.service;
 
 import com.ecom.domain.Category;
 import com.ecom.repository.CategoryRepository;
-import com.ecom.schema.product.ProductStatusEnum;
 import io.micrometer.core.instrument.MeterRegistry;
 import lombok.val;
 import org.springframework.cloud.client.circuitbreaker.ReactiveCircuitBreaker;
+import org.springframework.cloud.client.circuitbreaker.ReactiveCircuitBreakerFactory;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -20,9 +20,9 @@ public class CategoryService {
     private MeterRegistry meterRegistry;
 
 
-    public CategoryService(CategoryRepository categoryRepository, ReactiveCircuitBreaker categoryServiceCircuitBreaker, MeterRegistry meterRegistry) {
+    public CategoryService(CategoryRepository categoryRepository, ReactiveCircuitBreakerFactory circuitBreakerFactory, MeterRegistry meterRegistry) {
         this.categoryRepository = categoryRepository;
-        this.categoryServiceCircuitBreaker = categoryServiceCircuitBreaker;
+        this.categoryServiceCircuitBreaker = circuitBreakerFactory.create("categoryServiceCircuitBreaker");
         this.meterRegistry = meterRegistry;
     }
 

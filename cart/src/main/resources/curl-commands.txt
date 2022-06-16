@@ -1,0 +1,45 @@
+GET-CART-BY-USERID
+-----------------------
+curl -i 'localhost:8090/v1/cart?user=1'
+
+
+DELETE-CART
+-----------------------
+curl -i -X DELETE http://localhost:8090/v1/cart
+
+-------------------------------------------------------------------------------
+
+POST-CREATE-CART-ITEM
+-----------------------
+curl -i \
+-d '{ "cartId": "1", "productId": "1", "quantity":2}' \
+-H "Content-Type: application/json" \
+-X POST http://localhost:8090/v1/cart-item
+
+curl -i \
+-d '{ "cartId": "1", "productId": "2", "quantity":1}' \
+-H "Content-Type: application/json" \
+-X POST http://localhost:8090/v1/cart-item
+
+
+GET-CART-ITEMS-BY-CART-ID
+-----------------------
+curl -i 'http://localhost:8090/v1/cart-item?cart=1'
+
+
+UPDATE-CART-ITEM
+-----------------------
+curl -i \
+-d '{ "cartId": "1", "productId": "1", "quantity":3}' \
+-H "Content-Type: application/json" \
+-X POST http://localhost:8090/v1/cart-item
+
+curl -i \
+-d '{ "cartId": "1", "productId": "2", "quantity":5}' \
+-H "Content-Type: application/json" \
+-X POST http://localhost:8090/v1/cart-item
+
+
+DELETE-CART-ITEM
+-----------------------
+curl -i -X DELETE http://localhost:8090/v1/cart-item/628e5392df14b10c9deee4e3

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Service
@@ -19,16 +20,23 @@ public class UserService {
     }
 
     public Flux<User> getAllUsers() {
+
         return userRepository.findAll();
     }
 
-    public Mono<User> getUserById(String id) {
-        return  userRepository.findById(id);
+    public Mono<User> getUserById(String userId) {
+
+        return userRepository.findById(userId);
+    }
+
+    public Mono<User> loginUser(String email, String password) {
+        return userRepository.findByUserEmailAndUserPassword(email, password)
+                .elementAt(0, new User());
     }
 
     public Mono<User> addUser(User user) {
 
-        val date = new Date();
+        val date = LocalDate.now();
         user.setCreatedAt(date);
         user.setModifiedAt(date);
         return userRepository.save(user);
@@ -42,7 +50,7 @@ public class UserService {
                     user.setUserEmail(updatedUser.getUserEmail());
                     user.setUserPassword(updatedUser.getUserPassword());
                     user.setUserPhone(updatedUser.getUserPhone());
-                    user.setModifiedAt(new Date());
+                    user.setModifiedAt(LocalDate.now());
                     return userRepository.save(user);
                 });
     }

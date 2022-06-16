@@ -7,7 +7,13 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
 import java.util.Date;
+
+enum UserRole {
+    ADMIN,
+    USER
+}
 
 @Data
 @NoArgsConstructor
@@ -25,6 +31,7 @@ public class User {
     private String userPassword;
     @NotBlank(message = "user.userPhone must be present")
     private String userPhone;
-    private Date createdAt = new Date();
-    private Date modifiedAt = new Date();
+    private UserRole userRole = UserRole.USER;
+    private LocalDate createdAt = LocalDate.now();
+    private LocalDate modifiedAt = LocalDate.now();
 }
