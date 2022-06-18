@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.time.LocalDate;
 
@@ -18,6 +17,10 @@ public class CartItemService {
 
     private final CartItemRepository cartItemRepository;
 
+    /*
+     * Scheduler is using this to find all cart items to delete
+     * If they expires
+     */
     public Flux<CartItem> getAllCartItems() {
 
         return cartItemRepository.findAll();
@@ -60,7 +63,7 @@ public class CartItemService {
         return cartItemRepository.deleteById(cartItemId);
     }
 
-    public Mono<Void> deleteCartItemsByCartId(String cartId) {
+    public Mono<Void> deleteAllCartItems(String cartId) {
 
         return cartItemRepository.deleteByCartId(cartId);
     }

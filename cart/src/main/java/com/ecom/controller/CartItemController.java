@@ -25,7 +25,7 @@ public class CartItemController {
     private boolean cartItemServiceLogEnabled = true;
 
     @GetMapping
-    public Flux<CartItem> getCartItemsByCartId(@RequestParam(value = "cart", required = false) String cartId) {
+    public Flux<CartItem> getAllCartItems(@RequestParam(value = "cart", required = false) String cartId) {
 
         if(cartId != null) {
             return cartItemService.getCartItemsByCartId(cartId)
@@ -76,9 +76,9 @@ public class CartItemController {
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public Mono<Void> deleteCartItemsByCartId(@RequestParam(value = "cart", required = false) String cartId) {
+    public Mono<Void> deleteAllCartItems(@RequestParam(value = "cart", required = false) String cartId) {
 
-        return cartItemService.deleteCartItemsByCartId(cartId);
+        return cartItemService.deleteAllCartItems(cartId);
     }
 }
 
