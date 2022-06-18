@@ -44,7 +44,7 @@ public class RedisController {
     public Mono<Optional<RedisOrder>> get(@PathVariable String orderId) {
         return redisClient.fetchSerializedOrders(orderId)
                 .doOnNext(orderDataOp -> {
-                    if (!orderDataOp.isPresent()) {
+                    if (orderDataOp.isEmpty()) {
                         log.warn("Redis orders could not be retrieved.");
                     } else {
                         log.info("Fetched redis orders successfully.");
