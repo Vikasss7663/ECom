@@ -78,7 +78,7 @@ class RatingControllerIntgTest {
         var id = "1";
         webTestClient
                 .get()
-                .uri(RATING_URL+"/{id}", id)
+                .uri(RATING_URL+"{id}", id)
                 .exchange()
                 .expectStatus()
                 .is2xxSuccessful()
@@ -99,7 +99,7 @@ class RatingControllerIntgTest {
         var id = "3";
         webTestClient
                 .get()
-                .uri(RATING_URL+"/{id}", id)
+                .uri(RATING_URL+"{id}", id)
                 .exchange()
                 .expectStatus()
                 .isNotFound();
@@ -139,7 +139,7 @@ class RatingControllerIntgTest {
 
         webTestClient
                 .put()
-                .uri(RATING_URL+"/{id}", id)
+                .uri(RATING_URL+"{id}", id)
                 .bodyValue(rating)
                 .exchange()
                 .expectStatus()
@@ -162,7 +162,7 @@ class RatingControllerIntgTest {
 
         webTestClient
                 .delete()
-                .uri(RATING_URL+"/{id}", id)
+                .uri(RATING_URL+"{id}", id)
                 .exchange()
                 .expectStatus()
                 .isNoContent();

@@ -31,7 +31,7 @@ public class RatingController {
         return ratingService.getAllRatings(productId).log();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public Mono<ResponseEntity<Rating>> getRatingById(@PathVariable String id) {
 
         return ratingService.getRatingById(id)
@@ -47,7 +47,7 @@ public class RatingController {
         return ratingService.addRating(rating).log();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}")
     public Mono<ResponseEntity<Rating>> updateRating(@RequestBody Rating updatedRating,
                                                        @PathVariable String id) {
 
@@ -57,7 +57,7 @@ public class RatingController {
                 .log();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<Void> deleteRating(@PathVariable String id) {
 

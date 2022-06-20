@@ -14,8 +14,14 @@ public class CartController {
     private final CartRestClient cartRestClient;
 
     @GetMapping
-    public Mono<Cart> getCartByUserId(@RequestParam(value = "user", required = false) String userId) {
+    public Mono<Cart> getCartByUserId(@RequestParam(value = "user", required = true) String userId) {
 
-        return cartRestClient.retrieveCartById(userId);
+        return cartRestClient.retrieveCartByUserId(userId).log();
+    }
+
+    @GetMapping("{id}")
+    public Mono<Cart> getCartById(@PathVariable String id) {
+
+        return cartRestClient.retrieveCartById(id).log();
     }
 }

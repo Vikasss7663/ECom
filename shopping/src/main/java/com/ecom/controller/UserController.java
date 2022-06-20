@@ -23,7 +23,7 @@ public class UserController {
         return userRestClient.retrieveUsers();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public Mono<User> getUserById(@PathVariable String userId) {
 
         return userRestClient.retrieveUserById(userId);
@@ -36,14 +36,14 @@ public class UserController {
         return userRestClient.saveUser(user);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}")
     public Mono<User> updateUser(@RequestBody User updatedUser,
                                                        @PathVariable String id) {
 
         return userRestClient.updateUser(updatedUser, id);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable String id) {
 

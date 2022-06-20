@@ -29,7 +29,7 @@ public class CategoryController {
         return categoryService.getAllCategories().log();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public Mono<ResponseEntity<Category>> getCategoryById(@PathVariable String id) {
 
         return categoryService.getCategoryById(id)
@@ -45,7 +45,7 @@ public class CategoryController {
         return categoryService.addCategory(category).log();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}")
     public Mono<ResponseEntity<Category>> updateCategory(@RequestBody Category updatedCategory,
                                                            @PathVariable String id) {
 
@@ -55,7 +55,7 @@ public class CategoryController {
                 .log();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<Void> deleteCategory(@PathVariable String id) {
 

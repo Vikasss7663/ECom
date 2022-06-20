@@ -44,7 +44,7 @@ public class AddressController {
         return addressService.addAddress(address).log();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}")
     public Mono<ResponseEntity<Address>> updateAddress(@RequestBody Address updatedAddress,
                                                      @PathVariable String id) {
 
@@ -54,7 +54,7 @@ public class AddressController {
                 .log();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<Void> deleteAddress(@PathVariable String id) {
 

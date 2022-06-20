@@ -23,7 +23,7 @@ public class AddressController {
         return addressRestClient.retrieveAddresses(userId);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public Mono<Address> getAddressById(@PathVariable String addressId) {
 
         return addressRestClient.retrieveAddressById(addressId);
@@ -36,14 +36,14 @@ public class AddressController {
         return addressRestClient.saveAddress(address);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}")
     public Mono<Address> updateAddress(@RequestBody Address updatedAddress,
                                                        @PathVariable String id) {
 
         return addressRestClient.updateAddress(updatedAddress, id);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteAddress(@PathVariable String id) {
 

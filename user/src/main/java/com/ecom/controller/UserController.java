@@ -52,7 +52,7 @@ public class UserController {
         return userService.addUser(user).log();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}")
     public Mono<ResponseEntity<User>> updateUser(@RequestBody User updatedUser,
                                                      @PathVariable String id) {
 
@@ -62,7 +62,7 @@ public class UserController {
                 .log();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<Void> deleteUser(@PathVariable String id) {
 

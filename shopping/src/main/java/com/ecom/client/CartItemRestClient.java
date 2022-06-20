@@ -17,14 +17,14 @@ public class CartItemRestClient {
 
     private final WebClient webClient;
 
-    @Value("${restClient.cartItemItemUrl}")
+    @Value("${restClient.cartItemUrl}")
     private String cartItemUrl;
 
     public Flux<CartItem> retrieveAllCartItems(String cartId) {
 
         return webClient
                 .get()
-                .uri(cartItemUrl + "?cart" + cartId)
+                .uri(cartItemUrl + "?cart=" + cartId)
                 .retrieve()
                 .bodyToFlux(CartItem.class);
     }

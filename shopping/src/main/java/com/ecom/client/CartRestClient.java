@@ -23,7 +23,7 @@ public class CartRestClient {
 
         return webClient
                 .get()
-                .uri(cartUrl + "?user" + userId)
+                .uri(cartUrl + "?user=" + userId)
                 .retrieve()
                 .bodyToMono(Cart.class);
     }

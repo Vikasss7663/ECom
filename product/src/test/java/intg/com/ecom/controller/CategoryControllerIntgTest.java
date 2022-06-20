@@ -72,7 +72,7 @@ class CategoryControllerIntgTest {
         var id = "1";
         webTestClient
                 .get()
-                .uri(CATEGORY_URL+"/{id}", id)
+                .uri(CATEGORY_URL+"{id}", id)
                 .exchange()
                 .expectStatus()
                 .is2xxSuccessful()
@@ -93,7 +93,7 @@ class CategoryControllerIntgTest {
         var id = "3";
         webTestClient
                 .get()
-                .uri(CATEGORY_URL+"/{id}", id)
+                .uri(CATEGORY_URL+"{id}", id)
                 .exchange()
                 .expectStatus()
                 .isNotFound();
@@ -134,7 +134,7 @@ class CategoryControllerIntgTest {
 
         webTestClient
                 .put()
-                .uri(CATEGORY_URL+"/{id}", id)
+                .uri(CATEGORY_URL+"{id}", id)
                 .bodyValue(category)
                 .exchange()
                 .expectStatus()
@@ -157,7 +157,7 @@ class CategoryControllerIntgTest {
 
         webTestClient
                 .delete()
-                .uri(CATEGORY_URL+"/{id}", id)
+                .uri(CATEGORY_URL+"{id}", id)
                 .exchange()
                 .expectStatus()
                 .isNoContent();

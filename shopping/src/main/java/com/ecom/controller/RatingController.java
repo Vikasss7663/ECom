@@ -23,7 +23,7 @@ public class RatingController {
         return ratingRestClient.retrieveRatings(productId);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public Mono<Rating> getRatingById(@PathVariable String ratingId) {
 
         return ratingRestClient.retrieveRatingById(ratingId);
@@ -36,14 +36,14 @@ public class RatingController {
         return ratingRestClient.saveRating(rating);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}")
     public Mono<Rating> updateRating(@RequestBody Rating updatedRating,
                                                        @PathVariable String id) {
 
         return ratingRestClient.updateRating(updatedRating, id);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteRating(@PathVariable String id) {
 

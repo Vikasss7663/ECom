@@ -23,7 +23,7 @@ public class ProductController {
         return productRestClient.retrieveProducts(categoryId);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public Mono<Product> getProductById(@PathVariable String productId) {
 
         return productRestClient.retrieveProductById(productId);
@@ -36,14 +36,14 @@ public class ProductController {
         return productRestClient.saveProduct(product);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}")
     public Mono<Product> updateProduct(@RequestBody Product updatedProduct,
                                                        @PathVariable String id) {
 
         return productRestClient.updateProduct(updatedProduct, id);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProduct(@PathVariable String id) {
 

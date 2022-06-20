@@ -12,19 +12,19 @@ curl -i -X DELETE http://localhost:8090/v1/cart
 POST-CREATE-CART-ITEM
 -----------------------
 curl -i \
--d '{ "cartId": "1", "productId": "1", "quantity":2}' \
+-d '{ "cartId": "628d0b894828fa4251ab87ad", "productId": "1", "quantity":2}' \
 -H "Content-Type: application/json" \
 -X POST http://localhost:8090/v1/cart-item
 
 curl -i \
--d '{ "cartId": "1", "productId": "2", "quantity":1}' \
+-d '{ "cartId": "628d0b894828fa4251ab87ad", "productId": "2", "quantity":1}' \
 -H "Content-Type: application/json" \
 -X POST http://localhost:8090/v1/cart-item
 
 
 GET-CART-ITEMS-BY-CART-ID
 -----------------------
-curl -i 'http://localhost:8090/v1/cart-item?cart=1'
+curl -i 'http://localhost:8090/v1/cart-item?cart=628d0b894828fa4251ab87ad'
 
 
 UPDATE-CART-ITEM

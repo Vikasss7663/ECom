@@ -14,13 +14,11 @@ import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.stereotype.Component;
 
 @Component
 @Configuration
 @EnableCaching
-//@EnableRetry
 @RequiredArgsConstructor
 public class RedisConfig {
 
@@ -31,7 +29,7 @@ public class RedisConfig {
         return new LettuceConnectionFactory(redisProperties.getHostname(), redisProperties.getPort());
     }
 
-    @Bean("reactiveRedisOperations")
+    @Bean("reactiveRedisOrderOperations")
     public ReactiveRedisOperations<String, RedisOrder> reactiveRedisOperations(
             @Qualifier("reactiveRedisConnectionFactory") ReactiveRedisConnectionFactory factory
     ) {

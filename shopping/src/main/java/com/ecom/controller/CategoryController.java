@@ -23,7 +23,7 @@ public class CategoryController {
         return categoryRestClient.retrieveCategories();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public Mono<Category> getCategoryById(@PathVariable String categoryId) {
 
         return categoryRestClient.retrieveCategoryById(categoryId);
@@ -36,14 +36,14 @@ public class CategoryController {
         return categoryRestClient.saveCategory(category);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}")
     public Mono<Category> updateCategory(@RequestBody Category updatedCategory,
                                                        @PathVariable String id) {
 
         return categoryRestClient.updateCategory(updatedCategory, id);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCategory(@PathVariable String id) {
 

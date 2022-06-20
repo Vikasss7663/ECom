@@ -44,7 +44,7 @@ public class ProductController {
                 });
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public Mono<ResponseEntity<Product>> getProductById(@PathVariable String id) {
 
         return productService.getProductById(id)
@@ -63,7 +63,7 @@ public class ProductController {
         return productService.addProduct(product).log();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}")
     public Mono<ResponseEntity<Product>> updateProduct(@RequestBody Product updatedProduct,
                                                          @PathVariable String id) {
 
@@ -73,7 +73,7 @@ public class ProductController {
                 .log();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<Void> deleteProduct(@PathVariable String id) {
 

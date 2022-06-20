@@ -72,7 +72,7 @@ class ProductControllerIntgTest {
         var id = "1";
         webTestClient
                 .get()
-                .uri(PRODUCT_URL+"/{id}", id)
+                .uri(PRODUCT_URL+"{id}", id)
                 .exchange()
                 .expectStatus()
                 .is2xxSuccessful()
@@ -93,7 +93,7 @@ class ProductControllerIntgTest {
         var id = "3";
         webTestClient
                 .get()
-                .uri(PRODUCT_URL+"/{id}", id)
+                .uri(PRODUCT_URL+"{id}", id)
                 .exchange()
                 .expectStatus()
                 .isNotFound();
@@ -157,7 +157,7 @@ class ProductControllerIntgTest {
 
         webTestClient
                 .put()
-                .uri(PRODUCT_URL+"/{id}", id)
+                .uri(PRODUCT_URL+"{id}", id)
                 .bodyValue(product)
                 .exchange()
                 .expectStatus()
@@ -180,7 +180,7 @@ class ProductControllerIntgTest {
 
         webTestClient
                 .delete()
-                .uri(PRODUCT_URL+"/{id}", id)
+                .uri(PRODUCT_URL+"{id}", id)
                 .exchange()
                 .expectStatus()
                 .isNoContent();

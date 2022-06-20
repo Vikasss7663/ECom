@@ -23,10 +23,10 @@ public class CartItemController {
         return cartItemRestClient.retrieveAllCartItems(cartId);
     }
 
-    @GetMapping("/{id}")
-    public Mono<CartItem> getCartItemById(@PathVariable String cartItemId) {
+    @GetMapping("{id}")
+    public Mono<CartItem> getCartItemById(@PathVariable String id) {
 
-        return cartItemRestClient.retrieveCartItemById(cartItemId);
+        return cartItemRestClient.retrieveCartItemById(id);
     }
 
     @PostMapping
@@ -36,14 +36,14 @@ public class CartItemController {
         return cartItemRestClient.saveCartItem(cartItem);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}")
     public Mono<CartItem> updateCartItem(@RequestBody CartItem updatedCartItem,
                                                        @PathVariable String id) {
 
         return cartItemRestClient.updateCartItem(updatedCartItem, id);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCartItem(@PathVariable String id) {
 
