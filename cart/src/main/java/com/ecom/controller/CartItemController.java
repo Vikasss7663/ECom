@@ -39,9 +39,9 @@ public class CartItemController {
     }
 
     @GetMapping("{id}")
-    public Mono<ResponseEntity<CartItem>> getCartItemById(@PathVariable String cartItemId) {
+    public Mono<ResponseEntity<CartItem>> getCartItemById(@PathVariable String id) {
 
-        return cartItemService.getCartItemById(cartItemId)
+        return cartItemService.getCartItemById(id)
                 .map(ResponseEntity.ok()::body)
                 .onErrorResume(throwable -> {
                     if(cartItemServiceLogEnabled) log.error(throwable.getMessage());
@@ -57,7 +57,7 @@ public class CartItemController {
         return cartItemService.addCartItem(cartItem).log();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}")
     public Mono<ResponseEntity<CartItem>> updateCartItem(@RequestBody CartItem updatedCartItem,
                                                        @PathVariable String id) {
 
@@ -67,7 +67,7 @@ public class CartItemController {
                 .log();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<Void> deleteCartItem(@PathVariable String id) {
 

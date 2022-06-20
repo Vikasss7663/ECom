@@ -31,4 +31,9 @@ public class CartService {
 
         return cartRepository.deleteById(cartId);
     }
+
+    public Mono<Cart> getCartById(String id) {
+
+        return cartRepository.findById(id);
+    }
 }

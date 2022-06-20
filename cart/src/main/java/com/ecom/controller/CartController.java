@@ -25,4 +25,10 @@ public class CartController {
 
         return Mono.empty();
     }
+
+    @GetMapping("{id}")
+    public Mono<Cart> getCartById(@PathVariable String id) {
+
+        return cartService.getCartById(id);
+    }
 }
