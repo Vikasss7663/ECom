@@ -1,6 +1,5 @@
 package com.ecom.repository;
 
-import com.ecom.domain.Product;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,11 +11,12 @@ import reactor.test.StepVerifier;
 
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
 
 import static com.ecom.utils.DummyItems.getDummyProduct;
 import static com.ecom.utils.DummyItems.getDummyProducts;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DataMongoTest
 @TestPropertySource(properties = "spring.mongodb.embedded.version=3.5.5")
@@ -115,6 +115,17 @@ class ProductRepositoryIntgTest {
 
         StepVerifier.create(productFlux)
                 .expectNextCount(1)
+                .verifyComplete();
+    }
+
+    @Test
+    void findAllByProductId() {
+
+        HashSet<String> productIdList = new HashSet<>(Arrays.asList("1", "2"));
+        var productFlux = productRepository.findAllById(productIdList).log();
+
+        StepVerifier.create(productFlux)
+                .expectNextCount(2)
                 .verifyComplete();
     }
 }

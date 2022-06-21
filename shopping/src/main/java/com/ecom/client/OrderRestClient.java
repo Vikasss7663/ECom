@@ -2,6 +2,8 @@ package com.ecom.client;
 
 import com.ecom.domain.CartItem;
 import com.ecom.domain.OrderItem;
+import com.ecom.domain.Product;
+import com.ecom.domain.ProductInventory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +23,7 @@ import java.util.List;
 public class OrderRestClient {
 
     private final WebClient webClient;
+    private final ProductRestClient productRestClient;
 
     @Value("${restClient.orderUrl}")
     private String orderUrl;
@@ -46,6 +49,7 @@ public class OrderRestClient {
     public Flux<OrderItem> saveOrder(String userId, List<CartItem> cartItemList) {
 
         List<OrderItem> orderItemList = new ArrayList<>();
+        List<ProductInventory> productInventoryList = new ArrayList<>();
         for(CartItem cartItem: cartItemList) {
             orderItemList.add(
                     new OrderItem(
@@ -56,6 +60,18 @@ public class OrderRestClient {
                             LocalDate.now(),
                             LocalDate.now())
             );
+            productInventoryList.add(
+                    new ProductInventory(cartItem.getProductId(), cartItem.getQuantity())
+            );
+        }
+
+        Flux<Product> updatedProductList = productRestClient
+                .decreaseProductQuantity(productInventoryList);
+
+
+        if(updatedProductList.toStream().toList().size() != productInventoryList.size()) {
+
+            return Flux.error(new Exception("Order can't be placed"));
         }
 
         return webClient

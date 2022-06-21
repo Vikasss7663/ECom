@@ -20,7 +20,7 @@ public class OrderItem {
     @NotBlank(message = "cart.productId must be present")
     private String productId;
     @Min(value = 1, message = "cart.productQuantity must be more than 0")
-    private int quantity;
+    private long quantity;
     private LocalDate createdAt = LocalDate.now();
     private LocalDate modifiedAt = LocalDate.now();
 }

@@ -1,7 +1,6 @@
 package com.ecom.service;
 
 import com.ecom.domain.Product;
-import com.ecom.producer.ProductProducer;
 import com.ecom.repository.ProductRepository;
 import com.ecom.schema.product.ProductEvent;
 import com.ecom.schema.product.ProductEventKey;
@@ -16,7 +15,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -121,6 +121,28 @@ public class ProductService {
                 productRepository.findByCategoryId(categoryId).doOnNext(products -> meterRegistry.counter("product.fetch.category", "outcome", "success").increment()),
                 throwable -> {
                     meterRegistry.counter("product.fetch.category", "outcome", "failure").increment();
+                    return Flux.error(throwable);
+                }
+        );
+    }
+
+    public Flux<Product> getProductByIds(Set<String> productIdList) {
+
+        return productServiceCircuitBreaker.run(
+                productRepository.findAllById(productIdList).doOnNext(products -> meterRegistry.counter("product.fetch.ids", "outcome", "success").increment()),
+                throwable -> {
+                    meterRegistry.counter("product.fetch.ids", "outcome", "failure").increment();
+                    return Flux.error(throwable);
+                }
+        );
+    }
+
+    public Flux<Product> updateProducts(List<Product> productList) {
+
+        return productServiceCircuitBreaker.run(
+                productRepository.saveAll(productList).doOnNext(products -> meterRegistry.counter("product.update.products", "outcome", "success").increment()),
+                throwable -> {
+                    meterRegistry.counter("product.update.products", "outcome", "failure").increment();
                     return Flux.error(throwable);
                 }
         );
