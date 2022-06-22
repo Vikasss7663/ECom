@@ -66,4 +66,13 @@ public class CartItemRestClient {
                 .exchangeToMono(response -> Mono.empty())
                 .subscribeOn(Schedulers.boundedElastic()).subscribe();
     }
+
+    public void deleteAllCartItems(String cartId) {
+
+        webClient
+                .delete()
+                .uri(cartItemUrl + "?cart=" + cartId)
+                .exchangeToMono(response -> Mono.empty())
+                .subscribeOn(Schedulers.boundedElastic()).subscribe();
+    }
 }

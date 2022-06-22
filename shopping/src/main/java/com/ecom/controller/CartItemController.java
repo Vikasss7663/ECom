@@ -49,4 +49,11 @@ public class CartItemController {
 
         cartItemRestClient.deleteCartItem(id);
     }
+
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteAllCartItems(@RequestParam(value = "cart", required = false) String cartId) {
+
+        cartItemRestClient.deleteAllCartItems(cartId);
+    }
 }

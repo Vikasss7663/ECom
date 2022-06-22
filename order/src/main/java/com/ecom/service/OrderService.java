@@ -5,6 +5,7 @@ import com.ecom.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.LocalDate;
 
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final OrderItemService orderItemService;
 
     public Mono<Order> addOrder(String userId) {
 
@@ -21,6 +23,8 @@ public class OrderService {
 
     public Mono<Void> deleteOrder(String orderId) {
 
-        return orderRepository.deleteById(orderId);
+        return orderRepository.deleteById(orderId)
+                .switchIfEmpty(orderItemService.deleteAllOrderItems(orderId))
+                .subscribeOn(Schedulers.boundedElastic());
     }
 }

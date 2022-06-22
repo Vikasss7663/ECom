@@ -29,7 +29,7 @@ public class RedisConfig {
         return new LettuceConnectionFactory(redisProperties.getHostname(), redisProperties.getPort());
     }
 
-    @Bean("reactiveRedisOrderOperations")
+    @Bean("reactiveRedisOperations")
     public ReactiveRedisOperations<String, RedisOrder> reactiveRedisOperations(
             @Qualifier("reactiveRedisConnectionFactory") ReactiveRedisConnectionFactory factory
     ) {

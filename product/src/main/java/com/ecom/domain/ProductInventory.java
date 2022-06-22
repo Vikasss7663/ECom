@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 public class ProductInventory {
 
     private String productId;
-    private long quantity;
+    private long productQuantity;
 }

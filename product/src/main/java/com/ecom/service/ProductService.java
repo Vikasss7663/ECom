@@ -1,6 +1,7 @@
 package com.ecom.service;
 
 import com.ecom.domain.Product;
+import com.ecom.domain.ProductInventory;
 import com.ecom.repository.ProductRepository;
 import com.ecom.schema.product.ProductEvent;
 import com.ecom.schema.product.ProductEventKey;
@@ -11,12 +12,15 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.springframework.cloud.client.circuitbreaker.ReactiveCircuitBreaker;
 import org.springframework.cloud.client.circuitbreaker.ReactiveCircuitBreakerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 @Slf4j
 @Service
@@ -126,17 +130,6 @@ public class ProductService {
         );
     }
 
-    public Flux<Product> getProductByIds(Set<String> productIdList) {
-
-        return productServiceCircuitBreaker.run(
-                productRepository.findAllById(productIdList).doOnNext(products -> meterRegistry.counter("product.fetch.ids", "outcome", "success").increment()),
-                throwable -> {
-                    meterRegistry.counter("product.fetch.ids", "outcome", "failure").increment();
-                    return Flux.error(throwable);
-                }
-        );
-    }
-
     public Flux<Product> updateProducts(List<Product> productList) {
 
         return productServiceCircuitBreaker.run(
@@ -146,5 +139,53 @@ public class ProductService {
                     return Flux.error(throwable);
                 }
         );
+    }
+
+    @Transactional(isolation = Isolation.SERIALIZABLE)
+    public Flux<Product> increaseInventory(List<ProductInventory> productInventoryList) {
+
+        HashMap<String, Long> inventoryMap = new HashMap<>();
+        for(ProductInventory productInventory: productInventoryList) {
+            inventoryMap.put(productInventory.getProductId(), productInventory.getProductQuantity());
+        }
+
+        return productRepository.findAllById(inventoryMap.keySet())
+                .map(product -> {
+                    product.setProductQuantity(product.getProductQuantity() + inventoryMap.get(product.getProductId()));
+                    return product;
+                })
+                .collectList()
+                .flatMapMany(this::updateProducts);
+    }
+
+
+    @Transactional(isolation = Isolation.SERIALIZABLE)
+    public Flux<Product> decreaseInventory(List<ProductInventory> productInventoryList) {
+
+        HashMap<String, Long> inventoryMap = new HashMap<>();
+        for(ProductInventory productInventory: productInventoryList) {
+            inventoryMap.put(productInventory.getProductId(), productInventory.getProductQuantity());
+        }
+
+        List<Product> outOfStockProduct = new ArrayList<>();
+
+        return productRepository.findAllById(inventoryMap.keySet())
+                .map(product -> {
+
+                    product.setProductQuantity(product.getProductQuantity() - inventoryMap.get(product.getProductId()));
+
+                    if(product.getProductQuantity() < 0) {
+                        outOfStockProduct.add(product);
+                    }
+                    return product;
+                })
+                .collectList()
+                .flatMapMany(productList -> {
+
+                    if(!outOfStockProduct.isEmpty()) {
+                        return Flux.fromStream(productList.parallelStream());
+                    }
+                    return updateProducts(productList);
+                });
     }
 }

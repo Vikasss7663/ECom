@@ -40,18 +40,18 @@ public class OrderController {
             @PathVariable String id
     ) {
 
-       return cartRestClient.retrieveCartByUserId(id).log()
+       return cartRestClient.retrieveCartByUserId(id)
                .flatMapMany(cart ->
                        cartItemRestClient
                                .retrieveAllCartItems(cart.getCartId())
-                               .collectList().log()
-                               .flatMapMany(cartItemList -> orderRestClient.saveOrder(cart.getUserId(), cartItemList))
+                               .collectList()
+                               .flatMapMany(cartItemList -> orderRestClient.saveOrder(cartItemList, cart.getUserId()))
                );
     }
 
     @DeleteMapping("{id}")
-    public void deleteOrderItems(@PathVariable String id) {
+    public void deleteOrder(@PathVariable String id) {
 
-        orderRestClient.deleteOrderItems(id);
+        orderRestClient.deleteOrder(id);
     }
 }

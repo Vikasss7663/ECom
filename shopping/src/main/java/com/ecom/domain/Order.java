@@ -15,6 +15,14 @@ public class Order {
     private String orderId;
     @NotBlank(message = "cart.userId must be present")
     private String userId;
+    private PaymentStatus paymentStatus = PaymentStatus.PENDING;
     private LocalDate createdAt;
     private LocalDate modifiedAt;
+}
+
+enum PaymentStatus {
+
+    PENDING,
+    COMPLETED,
+    FAILED
 }

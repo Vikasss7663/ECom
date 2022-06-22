@@ -7,7 +7,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
 import java.time.LocalDate;
 
 @Data
@@ -20,6 +19,14 @@ public class Order {
     private String orderId;
     @NotBlank(message = "cart.userId must be present")
     private String userId;
+    private PaymentStatus paymentStatus = PaymentStatus.PENDING;
     private LocalDate createdAt;
     private LocalDate modifiedAt;
+}
+
+enum PaymentStatus {
+
+    PENDING,
+    COMPLETED,
+    FAILED
 }

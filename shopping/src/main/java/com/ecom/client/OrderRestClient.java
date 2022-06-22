@@ -15,7 +15,9 @@ import reactor.core.scheduler.Schedulers;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Component
@@ -46,43 +48,59 @@ public class OrderRestClient {
                 .bodyToFlux(OrderItem.class);
     }
 
-    public Flux<OrderItem> saveOrder(String userId, List<CartItem> cartItemList) {
+    public Flux<OrderItem> saveOrder(List<CartItem> cartItemList, String userId) {
 
         List<OrderItem> orderItemList = new ArrayList<>();
         List<ProductInventory> productInventoryList = new ArrayList<>();
         for(CartItem cartItem: cartItemList) {
-            orderItemList.add(
-                    new OrderItem(
-                            cartItem.getCartItemId(),
-                            cartItem.getCartId(),
-                            cartItem.getProductId(),
-                            cartItem.getQuantity(),
-                            LocalDate.now(),
-                            LocalDate.now())
-            );
             productInventoryList.add(
                     new ProductInventory(cartItem.getProductId(), cartItem.getQuantity())
             );
         }
 
-        Flux<Product> updatedProductList = productRestClient
-                .decreaseProductQuantity(productInventoryList);
+        return productRestClient
+                .decreaseProductQuantity(productInventoryList).log()
+                .collectList()
+                .flatMapMany(productList -> {
 
+                    Map<String, Long> productQuantityMap = new HashMap<>();
 
-        if(updatedProductList.toStream().toList().size() != productInventoryList.size()) {
+                    for(Product product: productList)
+                        productQuantityMap.put(product.getProductId(), product.getProductQuantity());
 
-            return Flux.error(new Exception("Order can't be placed"));
-        }
+                    List<OrderItem> invalidOrderItem = new ArrayList<>();
 
-        return webClient
-                .post()
-                .uri(orderUrl + "/" + userId)
-                .body(Mono.just(orderItemList), OrderItem.class)
-                .retrieve()
-                .bodyToFlux(OrderItem.class);
+                    for(CartItem cartItem: cartItemList) {
+                        long productQuantityRemaining = productQuantityMap.getOrDefault(cartItem.getProductId(), -1L);
+                        OrderItem orderItem = new OrderItem(
+                                cartItem.getCartItemId(),
+                                cartItem.getCartId(), // update order id later
+                                cartItem.getProductId(),
+                                productQuantityRemaining,
+                                LocalDate.now(),
+                                LocalDate.now()
+                        );
+
+                        if(productQuantityRemaining >= 0) {
+                            orderItemList.add(orderItem);
+                        } else {
+                            invalidOrderItem.add(orderItem);
+                        }
+                    }
+
+                    // if there is invalid order ( 1. product not found or 2. out of stock .)
+                    if(invalidOrderItem.size() > 0) return Flux.fromStream(invalidOrderItem.parallelStream());
+
+                    return webClient
+                            .post()
+                            .uri(orderUrl + "/" + userId)
+                            .body(Mono.just(orderItemList), OrderItem.class)
+                            .retrieve()
+                            .bodyToFlux(OrderItem.class);
+                });
     }
 
-    public void deleteOrderItems(String orderId) {
+    public void deleteOrder(String orderId) {
 
         webClient
                 .delete()
